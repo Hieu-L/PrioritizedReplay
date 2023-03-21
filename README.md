@@ -6,8 +6,6 @@ Afin d’en apprendre plus sur les méthodes d’apprentissage par renforcement,
 
 De plus, pour réaliser ce projet, nous nous sommes inspirés de nombreux codes notamment [celui des auteurs réalisé en matlab](https://github.com/marcelomattar/PrioritizedReplay), [un code réalisé par des étudiants en Master 2](https://github.com/osigaud/Prioritized-Memory-Access) et [une bibliothèque créée par monsieur Olivier Sigaud](https://github.com/osigaud/SimpleMazeMDP).
 
-![OpenField_before](figures/fig_1g/OpenField_before_learning.png)
-![OpenField_after](figures/fig_1g/OpenField_after_learning.png)
 
 
 

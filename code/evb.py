@@ -6,6 +6,7 @@ from parameters import Parameters
 from mazemdp.toolbox import softmax, egreedy, egreedy_loc, sample_categorical
 import matplotlib.pyplot as plt
 import seaborn as sns
+import scipy 
 
 """==============================================================================================================="""
 
@@ -114,11 +115,22 @@ def get_need(st, T, planExp, params) :
   
     elif params.onlineVSoffline == "offline" :
         # The agent is asleep, there is not st
-        # Calculate eigenvectors and eigenvalues
-        SR_or_SD = 0
+
+        # Calculate eigenvectors (vecteurs propres) and eigenvalues (valeurs propores)
+        eigenvalues, eigenvectors = np.linalg.eig(T)
+
+        # full matrix W whose columns are the corresponding left eigenvectors, so that W'*A = D*W'
+        left_eigenvectors = scipy.linalg.eig(T, left=True, right=False)[1] 
+        
+        if (abs(eigenvalues[0])-1 > 1e-10) :
+            print("Error get_need : precision error")
+            return
+        
+        SD = abs(left_eigenvectors[:,0]) # Stationary distribution of the MDP
+        SR_or_SD = SD
 
     else :
-        print("Error get_need : params.onlineVSoffline unknown")
+        print("Error get_need : params.onlineVSoffline unknown !")
 
     # Calculate the need term for each episode and each step
     for i_step in range (len(planExp)) :
@@ -143,6 +155,36 @@ def calculate_evb(planExp, gain, need, params) :
         else :
             EVB[i] = 0
             for x in range(len(planExp[i])) :
-                EVB[i] += need[i][-1] * max(gain[i][-1], params.baselineGain)
+                EVB[i] += need[i][-1] * max( gain[i][-1], params.baselineGain)
     
     return EVB
+
+"""==============================================================================================================="""
+
+def get_maxEVB_idx (EVB, planExp) :
+    """ Returns the index of planExp with the highest EVB values
+
+         Arguments
+        ----------
+            EVB -- np.array (???) : List of expected EVB values
+            planExp -- matrix ((state X action) X 4) : memory of last reward and next state obtained of each tuple (state, action)
+            
+        Returns
+        ---------- 
+            maxEVB_idx -- (??) : Index of planExp with the highest EVB value
+
+    """
+    maxEVB_idx = np.argwhere(EVB == max(EVB))
+
+    if len(maxEVB_idx) > 1 :
+        n_steps = np.array([arr.shape[0] if len(arr.shape) > 1 else 1 for arr in planExp])
+        maxEVB_idx = maxEVB_idx[n_steps[maxEVB_idx] == min(n_steps[maxEVB_idx])]
+        if len(maxEVB_idx) > 1 :
+            maxEVB_idx = maxEVB_idx[np.random.randint(len(maxEVB_idx))]  
+                            
+    else:
+        maxEVB_idx = maxEVB_idx[0][0]
+    
+    return maxEVB_idx
+
+"""==============================================================================================================="""

@@ -25,14 +25,17 @@ class Parameters :
 
     #params for action selection policies :
 
-    self.actpolicy = "egreedy"        
+    self.actpolicy = "softmax"        
     "softmax or egreedy"
 
-    self.epsilon = 0               
+    self.epsilon = 0.1               
     "exploration rate for egreedy"
 
-    self.tau = 1/100                   
+    self.tau = 0.2                  
     "inverse temperature for softmax"
+    
+    self.sigma = 0.1
+    "gaussian noise for reward"
 
 
     #params for Q-learning :
@@ -72,15 +75,21 @@ class Parameters :
     self.allowLoops = False        
     "allow loops in n-step backups"
 
-    self.baselineGain = int(1e-10)     
+    self.baselineGain = 1e-10     
     "gain is set to at least this value"
 
     self.EVBthreshold = 0                
     "minimum EVB so that planning is performed"
 
-    # NEW PARAMETERS FOR RANDOM REPLAY
+    # params for random replay ( or DYNA-Q )
     self.allneed2one = False
     self.allgain2one = False
+
+    # params for fig 4 c, e
+    self.changeR = False
+    self.x4 = False
+    self.x0 = False
+
 
 
 

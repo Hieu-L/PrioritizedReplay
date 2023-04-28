@@ -8,6 +8,10 @@ De plus, pour réaliser ce projet, nous nous sommes inspirés de nombreux codes 
 
 Vous trouverez une première version de notre code : [Prioritized Memory Access](https://colab.research.google.com/drive/1gJQQxFmRuTYHx_oU7vF4k3s7POdKIe6T)
 
+# HOW TO
+
+To use this code, you could execute any python file that starts with "fig" : python3 fig1-d.py
+
 
 # FIGURES CHECKLIST
 
